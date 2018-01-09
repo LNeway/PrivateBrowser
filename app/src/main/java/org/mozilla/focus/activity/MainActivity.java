@@ -253,6 +253,7 @@ public class MainActivity extends LocaleAwareAppCompatActivity {
                 urlInputFragment.onBackPressed()) {
             // The URL input fragment has handled the back press. It does its own animations so
             // we do not try to remove it from outside.
+            showUrlInputScreen();
             return;
         }
 

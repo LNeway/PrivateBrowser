@@ -201,7 +201,7 @@ class UrlInputFragment :
             return true
         }
 
-        return false
+        return !urlView.text.isEmpty();
     }
 
     override fun onStart() {

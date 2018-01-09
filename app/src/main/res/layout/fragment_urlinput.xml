@@ -109,14 +109,14 @@
                     android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:contentDescription="@string/content_description_clear_input" />
 
-                <org.mozilla.focus.widget.IndicatorMenuButton
-                    android:id="@+id/menuView"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:visibility="gone"
-                    android:background="?android:attr/selectableItemBackgroundBorderless"
-                    android:contentDescription="@string/content_description_menu" />
-
+                <ImageView
+                    android:id="@+id/scanImg"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:src="@drawable/scan_icon"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="8dp"
+                    />
             </LinearLayout>
 
         </FrameLayout>

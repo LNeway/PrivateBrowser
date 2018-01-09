@@ -70,6 +70,11 @@ public class InfoActivity extends AppCompatActivity {
         return getIntentFor(context, SupportUtils.getSumoURLForTopic(context, "trackers"), resources.getString(R.string.menu_help));
     }
 
+   public static Intent getScanIntent(final Context context) {
+        Intent intent = new Intent(context, BarcodeScanActivity.class);
+        return intent;
+   }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -162,8 +162,6 @@ class UrlInputFragment :
             dismissView.visibility = View.GONE
             toolbarBackgroundView.visibility = View.GONE
 
-            menuView.visibility = View.VISIBLE
-            menuView.setOnClickListener(this)
         }
 
         urlView.setOnCommitListener(this)
@@ -173,6 +171,8 @@ class UrlInputFragment :
             clearView.visibility = View.VISIBLE
             searchViewContainer.visibility = View.GONE
         }
+
+        scanImg.setOnClickListener(this)
     }
 
     override fun applyLocale() {
@@ -238,13 +238,6 @@ class UrlInputFragment :
                 clear()
             }
 
-            R.id.menuView -> context?.let {
-                val menu = HomeMenu(it, this)
-                menu.show(view)
-
-                displayedPopupMenu = menu
-            }
-
             R.id.whats_new -> context?.let {
                 TelemetryWrapper.openWhatsNewEvent(WhatsNew.shouldHighlightWhatsNew(it))
 
@@ -252,6 +245,11 @@ class UrlInputFragment :
 
                 SessionManager.getInstance()
                         .createSession(Source.MENU, SupportUtils.getWhatsNewUrl(context))
+            }
+
+            R.id.scanImg -> context?.let {
+                val scanIntent = InfoActivity.getScanIntent(it);
+                startActivity(scanIntent);
             }
 
             R.id.settings -> (activity as LocaleAwareAppCompatActivity).openPreferences()
@@ -419,7 +417,6 @@ class UrlInputFragment :
 
                             if (!isOverlay) {
                                 dismissView.visibility = View.GONE
-                                menuView.visibility = View.VISIBLE
                             }
                         }
                     }
@@ -520,7 +517,6 @@ class UrlInputFragment :
             }
         } else {
             clearView.visibility = View.VISIBLE
-            menuView.visibility = View.GONE
 
             if (!isOverlay && dismissView.visibility != View.VISIBLE) {
                 playVisibilityAnimation(false)

@@ -6,6 +6,7 @@ package org.mozilla.focus.fragment
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.app.Fragment
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
@@ -16,6 +17,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
+import com.google.zxing.integration.android.IntentIntegrator
 import kotlinx.android.synthetic.main.fragment_urlinput.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
@@ -248,8 +250,8 @@ class UrlInputFragment :
             }
 
             R.id.scanImg -> context?.let {
-                val scanIntent = InfoActivity.getScanIntent(it);
-                startActivity(scanIntent);
+                val frag: Fragment = this as Fragment
+                IntentIntegrator.forFragment(frag).initiateScan();
             }
 
             R.id.settings -> (activity as LocaleAwareAppCompatActivity).openPreferences()

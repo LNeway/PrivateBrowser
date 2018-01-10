@@ -97,6 +97,11 @@
         
         <activity android:name=".activity.BarcodeScanActivity" />
 
+        <activity
+            android:name="com.journeyapps.barcodescanner.CaptureActivity"
+            android:screenOrientation="fullSensor"
+            tools:replace="screenOrientation" />
+
         <service
             android:name=".customtabs.CustomTabsService"
             android:exported="true"

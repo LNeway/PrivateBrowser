@@ -169,6 +169,7 @@ dependencies {
     compile 'org.mozilla.telemetry:telemetry:1.1.1'
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     compile 'org.jetbrains.kotlinx:kotlinx-coroutines-android:0.19.3'
+    compile project(":GoogleCamera")
 
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'

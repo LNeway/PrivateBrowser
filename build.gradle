@@ -6,6 +6,11 @@ buildscript {
     ext.espresso_version = '3.0.1'
     ext.kotlin_version = '1.2.0'
 
+    ext.compileSdkVersion = 26
+    ext.buildToolsVersion = '26.0.1'
+    ext.minSdkVersion = 21
+    ext.targetSdkVersion = 26
+
     repositories {
         jcenter()
     }

@@ -6,18 +6,21 @@ package org.mozilla.focus.fragment
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
-import android.app.Fragment
+import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.StyleSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
+import android.widget.Toast
 import com.google.zxing.integration.android.IntentIntegrator
+import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.fragment_urlinput.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
@@ -29,11 +32,7 @@ import org.mozilla.focus.session.Session
 import org.mozilla.focus.session.SessionManager
 import org.mozilla.focus.session.Source
 import org.mozilla.focus.telemetry.TelemetryWrapper
-import org.mozilla.focus.utils.Settings
-import org.mozilla.focus.utils.SupportUtils
-import org.mozilla.focus.utils.ThreadUtils
-import org.mozilla.focus.utils.UrlUtils
-import org.mozilla.focus.utils.ViewUtils
+import org.mozilla.focus.utils.*
 import org.mozilla.focus.whatsnew.WhatsNew
 import org.mozilla.focus.widget.InlineAutocompleteEditText
 
@@ -250,8 +249,13 @@ class UrlInputFragment :
             }
 
             R.id.scanImg -> context?.let {
-                val frag: Fragment = this as Fragment
-                IntentIntegrator.forFragment(frag).initiateScan();
+                 IntentIntegrator.forSupportFragment(this)
+                        .setDesiredBarcodeFormats(IntentIntegrator.QR_CODE_TYPES)
+                        .setPrompt("请对准二维码")// 设置提示语
+                        .setCameraId(0)// 选择摄像头,可使用前置或者后置
+                        .setBeepEnabled(false)// 是否开启声音,扫完码之后会"哔"的一声
+                        .setBarcodeImageEnabled(true)// 扫完码之后生成二维码的图片
+                        .initiateScan();// 初始化扫码
             }
 
             R.id.settings -> (activity as LocaleAwareAppCompatActivity).openPreferences()
@@ -437,10 +441,21 @@ class UrlInputFragment :
                 ?.commitAllowingStateLoss()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        val result : IntentResult? = IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+        val content:String? = result?.contents
+        if (content != null) {
+            urlView.setText(content)
+            onCommit()
+        }
+    }
+
+
     override fun onCommit() {
         val input = urlView.text.toString()
 
-        if (!input.trim { it <= ' ' }.isEmpty()) {
+        if (!input.trim { it <= ' ' }.isEmpty()  ) {
             ViewUtils.hideKeyboard(urlView)
 
             val isUrl = UrlUtils.isUrl(input)

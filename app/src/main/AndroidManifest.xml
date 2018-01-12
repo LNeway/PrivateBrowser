@@ -94,8 +94,6 @@
 
         <activity android:name=".activity.EraseShortcutActivity"
             android:theme="@android:style/Theme.Translucent" />
-        
-        <activity android:name=".activity.BarcodeScanActivity" />
 
         <activity
             android:name="com.journeyapps.barcodescanner.CaptureActivity"

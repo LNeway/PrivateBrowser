@@ -1,1 +1,1 @@
-include ':app', ':GoogleCamera'
+include ':app'

@@ -414,12 +414,16 @@ class UrlInputFragment :
                 .alpha((if (reverse) 0 else 1).toFloat())
                 .setListener(object : AnimatorListenerAdapter() {
                     override fun onAnimationStart(animation: Animator) {
-                        toolbarBackgroundView.visibility = View.VISIBLE
+                        if (toolbarBackgroundView != null) {
+                            toolbarBackgroundView.visibility = View.VISIBLE
+                        }
                     }
 
                     override fun onAnimationEnd(animation: Animator) {
                         if (reverse) {
-                            toolbarBackgroundView.visibility = View.GONE
+                            if (toolbarBackgroundView != null) {
+                                toolbarBackgroundView.visibility = View.GONE
+                            }
 
                             if (!isOverlay) {
                                 dismissView.visibility = View.GONE

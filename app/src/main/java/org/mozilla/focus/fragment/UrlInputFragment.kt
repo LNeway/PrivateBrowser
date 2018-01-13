@@ -531,6 +531,7 @@ class UrlInputFragment :
 
         if (searchText.trim { it <= ' ' }.isEmpty()) {
             clearView.visibility = View.GONE
+            scanImg.visibility = View.VISIBLE
             searchViewContainer.visibility = View.GONE
 
             if (!isOverlay) {
@@ -538,6 +539,7 @@ class UrlInputFragment :
             }
         } else {
             clearView.visibility = View.VISIBLE
+            scanImg.visibility = View.GONE
 
             if (!isOverlay && dismissView.visibility != View.VISIBLE) {
                 playVisibilityAnimation(false)

@@ -10,12 +10,16 @@ import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 
 import org.mozilla.gecko.GeckoView;
 import org.mozilla.gecko.GeckoViewSettings;
 
 public class NestedGeckoView extends GeckoView implements NestedScrollingChild {
+
+    private static final String TAG = "NestedGeckoView";
+
     private int mLastY;
     private final int[] mScrollOffset = new int[2];
     private final int[] mScrollConsumed = new int[2];
@@ -44,7 +48,6 @@ public class NestedGeckoView extends GeckoView implements NestedScrollingChild {
         switch (action) {
             case MotionEvent.ACTION_MOVE:
                 int deltaY = mLastY - eventY;
-
                 if (dispatchNestedPreScroll(0, deltaY, mScrollConsumed, mScrollOffset)) {
                     deltaY -= mScrollConsumed[1];
                     mLastY = eventY - mScrollOffset[1];
@@ -113,7 +116,9 @@ public class NestedGeckoView extends GeckoView implements NestedScrollingChild {
 
     @Override
     public boolean dispatchNestedPreScroll(int dx, int dy, int[] consumed, int[] offsetInWindow) {
-        return mChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+        boolean result =  mChildHelper.dispatchNestedPreScroll(dx, dy, consumed, offsetInWindow);
+        Log.e(TAG,  "parent handle result is " + result);
+        return result;
     }
 
     @Override

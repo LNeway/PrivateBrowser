@@ -3,44 +3,15 @@
    - License, v. 2.0. If a copy of the MPL was not distributed with this
    - file, You can obtain one at http://mozilla.org/MPL/2.0/. -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/backgroundView"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <org.mozilla.focus.widget.ResizableKeyboardLinearLayout
-        android:id="@+id/keyboardLinearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:layout_marginTop="81dp"
-        android:orientation="vertical"
-        app:animate="true">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:contentDescription="@string/app_name"
-            android:paddingBottom="16dp"
-            android:src="@drawable/wordmark"
-            android:focusable="false" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:lineSpacingExtra="7sp"
-            android:text="@string/teaser"
-            android:textColor="#eeeeee"
-            android:textSize="14sp"
-            android:focusable="false" />
-
-    </org.mozilla.focus.widget.ResizableKeyboardLinearLayout>
-
     <FrameLayout
+        android:id="@+id/searchRegion"
         android:layout_width="match_parent"
         android:layout_height="81dp"
         android:orientation="horizontal"
@@ -118,12 +89,21 @@
                     android:layout_marginBottom="8dp"
                     android:layout_margin="8dp"
                     android:layout_gravity="end|center_vertical"
+                    android:contentDescription="Scan QR-code"
                     />
             </LinearLayout>
 
         </FrameLayout>
 
     </FrameLayout>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/navRv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchRegion"
+        android:layout_marginTop="16dp" />
 
     <View
         android:id="@+id/dismissView"
@@ -162,4 +142,23 @@
 
     </FrameLayout>
 
-</FrameLayout>
+
+    <org.mozilla.focus.widget.FloatingEraseButton
+        android:id="@+id/erase"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end|bottom"
+        android:layout_marginBottom="@dimen/floating_action_button_margin"
+        android:layout_marginEnd="@dimen/floating_action_button_margin"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:elevation="4dp"
+        android:src="@drawable/ic_delete"
+        app:backgroundTint="@color/colorErase"
+        app:rippleColor="@color/colorErasePressed"
+        app:fabSize="normal"
+        app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
+        android:contentDescription="@string/content_description_erase" />
+
+
+</RelativeLayout>

@@ -9,6 +9,7 @@ import android.animation.AnimatorListenerAdapter
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.text.SpannableString
 import android.text.TextUtils
 import android.text.style.StyleSpan
@@ -18,13 +19,17 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
-import android.widget.Toast
+
 import com.google.zxing.integration.android.IntentIntegrator
 import com.google.zxing.integration.android.IntentResult
 import kotlinx.android.synthetic.main.fragment_urlinput.*
 import org.mozilla.focus.R
 import org.mozilla.focus.activity.InfoActivity
+import org.mozilla.focus.activity.NavItem
+import org.mozilla.focus.architecture.DataBindingAdapter
 import org.mozilla.focus.autocomplete.UrlAutoCompleteFilter
+import org.mozilla.focus.datasource.DatasourceFactory
+import org.mozilla.focus.datasource.NavigationDataSource
 import org.mozilla.focus.locale.LocaleAwareAppCompatActivity
 import org.mozilla.focus.locale.LocaleAwareFragment
 import org.mozilla.focus.menu.home.HomeMenu
@@ -46,7 +51,12 @@ class UrlInputFragment :
         LocaleAwareFragment(),
         View.OnClickListener,
         InlineAutocompleteEditText.OnCommitListener,
-        InlineAutocompleteEditText.OnFilterListener {
+        InlineAutocompleteEditText.OnFilterListener,
+        DataBindingAdapter.OnItemClickListener <NavItem>,
+        NavigationDataSource.NavItemCallback {
+
+    val TAG:String = "UrlInputFragment"
+
     companion object {
         @JvmField
         val FRAGMENT_TAG = "url_input"
@@ -114,6 +124,8 @@ class UrlInputFragment :
     private val urlAutoCompleteFilter: UrlAutoCompleteFilter = UrlAutoCompleteFilter()
     private var displayedPopupMenu: HomeMenu? = null
 
+    private var adapter : NavigationAdapter? = null
+
     @Volatile private var isAnimating: Boolean = false
 
     private var session: Session? = null
@@ -155,14 +167,10 @@ class UrlInputFragment :
             }
         })
 
-        if (isOverlay) {
-            keyboardLinearLayout.visibility = View.GONE
-        } else {
+        if (!isOverlay) {
             backgroundView.setBackgroundResource(R.drawable.background_gradient)
-
             dismissView.visibility = View.GONE
             toolbarBackgroundView.visibility = View.GONE
-
         }
 
         urlView.setOnCommitListener(this)
@@ -173,7 +181,15 @@ class UrlInputFragment :
             searchViewContainer.visibility = View.GONE
         }
 
+        adapter = NavigationAdapter(activity)
+        navRv.layoutManager = GridLayoutManager(activity, 4)
+        navRv.adapter = adapter
+
+        adapter?.setOnItemClickListener(this)
+
         scanImg.setOnClickListener(this)
+
+        DatasourceFactory.getNavigatonDatasource().loadNavItem(this)
     }
 
     override fun applyLocale() {
@@ -218,7 +234,7 @@ class UrlInputFragment :
         super.onStop()
 
         // Reset the keyboard layout to avoid a jarring animation when the view is started again. (#1135)
-        keyboardLinearLayout.reset()
+
     }
 
     fun showKeyboard() {
@@ -443,6 +459,22 @@ class UrlInputFragment :
                 ?.beginTransaction()
                 ?.remove(this)
                 ?.commitAllowingStateLoss()
+    }
+
+    override fun onError(requestId: Int, errorCode: Int) {
+        Log.e(TAG, "load navItem error")
+    }
+
+    override fun onNavItemRead(navItems: MutableList<NavItem>) {
+        adapter?.setDatas(navItems)
+        adapter?.notifyDataSetChanged()
+    }
+
+    override fun onClick(value: NavItem?, view: View?, position: Int) {
+        if (value != null) {
+            val url  = UrlUtils.normalize(value.url)
+            openUrl(url, null)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

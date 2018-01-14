@@ -6,6 +6,8 @@ package org.mozilla.focus.fragment
 
 import android.animation.Animator
 import android.animation.AnimatorListenerAdapter
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
@@ -190,6 +192,11 @@ class UrlInputFragment :
         scanImg.setOnClickListener(this)
 
         DatasourceFactory.getNavigatonDatasource().loadNavItem(this)
+
+        moreBtn.setOnClickListener(this)
+        windowManagerBtn.setOnClickListener(this)
+        settingBtn.setOnClickListener(this);
+        favoriteBtn.setOnClickListener(this)
     }
 
     override fun applyLocale() {
@@ -279,6 +286,26 @@ class UrlInputFragment :
             R.id.help -> {
                 val helpIntent = InfoActivity.getHelpIntent(activity)
                 startActivity(helpIntent)
+            }
+
+            R.id.moreBtn -> {
+                if (windowManagerBtn.visibility == View.INVISIBLE) {
+                    showMoreOperation()
+                } else {
+                    hideMoreOperation()
+                }
+            }
+
+            R.id.windowManagerBtn -> {
+
+            }
+
+            R.id.favoriteBtn -> {
+
+            }
+
+            R.id.settingBtn -> {
+                (activity as LocaleAwareAppCompatActivity).openPreferences()
             }
 
             else -> throw IllegalStateException("Unhandled view in onClick()")
@@ -590,5 +617,40 @@ class UrlInputFragment :
             searchView.text = content
             searchViewContainer.visibility = View.VISIBLE
         }
+    }
+
+    fun showMoreOperation() {
+        val animator1 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator1.addUpdateListener { value-> windowManagerBtn.visibility = View.VISIBLE }
+
+        val animator2 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator2.addUpdateListener { value-> favoriteBtn.visibility = View.VISIBLE }
+
+        val animator3 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator3.addUpdateListener { value-> settingBtn.visibility = View.VISIBLE }
+
+        val animatorSet = AnimatorSet();
+        animatorSet.playSequentially(animator1, animator2, animator3)
+        animatorSet.setDuration(80L)
+        animatorSet.start()
+
+    }
+
+
+    fun hideMoreOperation() {
+        val animator1 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator1.addUpdateListener { value-> settingBtn.visibility = View.INVISIBLE }
+
+        val animator2 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator2.addUpdateListener { value-> favoriteBtn.visibility = View.INVISIBLE }
+
+        val animator3 : ValueAnimator = ValueAnimator.ofInt(0, 1)
+        animator3.addUpdateListener { value-> windowManagerBtn.visibility = View.INVISIBLE }
+
+        val animatorSet = AnimatorSet();
+        animatorSet.playSequentially(animator1, animator2, animator3)
+        animatorSet.setDuration(80L)
+        animatorSet.start()
+
     }
 }

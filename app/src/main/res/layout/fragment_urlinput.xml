@@ -139,26 +139,57 @@
             android:layout_height="1dp"
             android:background="#33ffffff"
             android:layout_gravity="bottom" />
-
     </FrameLayout>
 
 
-    <org.mozilla.focus.widget.FloatingEraseButton
-        android:id="@+id/erase"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/moreBtn"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
         android:layout_gravity="end|bottom"
-        android:layout_marginBottom="@dimen/floating_action_button_margin"
-        android:layout_marginEnd="@dimen/floating_action_button_margin"
+        android:layout_marginBottom="28dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:elevation="4dp"
-        android:src="@drawable/ic_delete"
-        app:backgroundTint="@color/colorErase"
-        app:rippleColor="@color/colorErasePressed"
-        app:fabSize="normal"
-        app:layout_behavior="org.mozilla.focus.widget.FloatingActionButtonBehavior"
+        android:src="@drawable/more"
         android:contentDescription="@string/content_description_erase" />
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/windowManagerBtn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_above="@+id/moreBtn"
+        android:layout_marginStart="22dp"
+        android:layout_marginBottom="12dp"
+        android:elevation="4dp"
+        android:src="@drawable/multi_window"
+        android:visibility="invisible"
+        android:contentDescription="@string/content_description_erase" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/favoriteBtn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_toEndOf="@+id/moreBtn"
+        android:layout_marginStart="-2dp"
+        android:layout_alignBottom="@+id/moreBtn"
+        android:layout_marginBottom="43.5dp"
+        android:elevation="4dp"
+        android:src="@drawable/favorite"
+        android:visibility="invisible"
+        android:contentDescription="@string/content_description_erase" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/settingBtn"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_toEndOf="@+id/moreBtn"
+        android:layout_alignBottom="@+id/moreBtn"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="2dp"
+        android:contentDescription="@string/content_description_erase"
+        android:elevation="4dp"
+        android:visibility="invisible"
+        android:src="@drawable/setting" />
 
 </RelativeLayout>
